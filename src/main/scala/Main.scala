@@ -20,9 +20,9 @@ trait Tweaking {
     def ~>[T](t: T)(implicit tweakableWith: W TweakableWith T): W = { tweakableWith.tweakWith(w, t); w }
   }
 
-  implicit def tweakableWithTweak[W <: Widget] =
-    new (W TweakableWith Tweak[W]) {
-      def tweakWith(w: W, t: Tweak[W]) = t(w)
+  implicit def tweakableWithTweak[W <: Widget, V >: W <: Widget] =
+    new (W TweakableWith Tweak[V]) {
+      def tweakWith(w: W, t: Tweak[V]) = t(w)
     }
 
 }
@@ -34,7 +34,8 @@ trait Tweaks {
 
 object TweakMacros {
   def onImpl[W <: Widget : c.WeakTypeTag](c: Context)(event: c.Expr[String], action: c.Expr[() ⇒ Unit]) = {
-    println(c.weakTypeOf[W])
-    ???
+    import c.universe._
+    c.info(c.enclosingPosition, s"type: ${weakTypeOf[W]}", force = true)
+    c.Expr[Tweak[W]](q"Tweak[${weakTypeOf[W]}](x ⇒ ())")
   }
 }
