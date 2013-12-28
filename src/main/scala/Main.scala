@@ -20,14 +20,15 @@ trait Tweaking {
     def ~>[T](t: T)(implicit tweakableWith: W TweakableWith T): W = { tweakableWith.tweakWith(w, t); w }
   }
 
-  implicit def tweakableWithTweak[W <: Widget, V >: W <: Widget] =
-    new (W TweakableWith Tweak[V]) {
-      def tweakWith(w: W, t: Tweak[V]) = t(w)
+  implicit def tweakableWithTweak[W <: Widget] =
+    new (W TweakableWith Tweak[W]) {
+      def tweakWith(w: W, t: Tweak[W]) = t(w)
     }
 
 }
 
 trait Tweaks {
+  def text(t: String) = Tweak[Widget](x ⇒ ())
   def on[W <: Widget](event: String, action: () ⇒ Unit): Tweak[W] = macro TweakMacros.onImpl[W]
 }
 
