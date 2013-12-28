@@ -20,9 +20,9 @@ trait Tweaking {
     def ~>[T](t: T)(implicit tweakableWith: W TweakableWith T): W = { tweakableWith.tweakWith(w, t); w }
   }
 
-  implicit def tweakableWithTweak[W <: Widget, V >: W <: Widget] =
-    new (W TweakableWith Tweak[V]) {
-      def tweakWith(w: W, t: Tweak[V]) = t(w)
+  implicit def tweakableWithTweak[W <: Widget, T <: Tweak[W]] =
+    new (W TweakableWith T) {
+      def tweakWith(w: W, t: T) = t(w)
     }
 
 }
