@@ -1,12 +1,9 @@
-name := "fundeps"
+name := "observer-macros"
 
 version := "0.1-SNAPSHOT"
 
-scalaVersion := "2.10.3"
-
-addCompilerPlugin("org.scalamacros" % "paradise" % "2.0.0-M1" cross CrossVersion.full)
+scalaVersion := "2.11.0-M7"
 
 libraryDependencies ++= Seq(
-  "org.scala-lang" % "scala-reflect" % scalaVersion.value,
-  "org.scalatest" %% "scalatest" % "2.0" % "test"
+  "org.scala-lang" % "scala-reflect" % scalaVersion.value
 )

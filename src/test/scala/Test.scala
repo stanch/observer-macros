@@ -1,9 +1,14 @@
 package main
 
-import org.scalatest.FlatSpec
+class Main extends App with Tweaking {
+  // explicit usage
+  val setEmptyClick = tweak [Button] doing (_.setOnClick(()))
+  new Button ~> setEmptyClick
 
-class MainSpec extends FlatSpec with Tweaking with Tweaks {
-  it should "infer type" in {
-    new Button ~> on("click", () ⇒ println("much doge wow")) ~> text("Hi")
-  }
+  // inferred usage
+  new Button ~> (tweak doing { _.setOnClick(()) })
+  new Button ~> test
+
+  // inferred as Widget
+  def id(i: Int) = tweak doing (_.setId(i))
 }
